@@ -126,10 +126,35 @@ public class Arrays extends PApplet {
         switch (mode) {
             case 0: {
                 // Bar chart
+
                 break;
             }
             case 1: {
                 // Trend line
+                float border = width * 0.1f;
+                stroke(255);
+                colorMode(HSB);
+                line(border, border, border, height - border);
+                line(border, height - border, width - border, height - border);
+                textAlign(CENTER, CENTER);
+                for(float f = 0; f<= 120; f+=10)
+                {
+                    float y = map(f, 0, 120, height-border, border);
+                    line(border - 5, y, border, y);
+                    fill(255);
+                    text((int)f, border * 0.5f, y);
+                }
+                float w = (width - border *2) / (float) rainfall.length;
+                for(int i = 1; i < rainfall.length; i++)
+                {
+                    float x1 = map(i - 1, 0, rainfall.length - 1, border + (w * 0.5f), width - border - (w * 0.5f));
+                    float y1 = map(rainfall[i- 1], 0, 120, height - border, border);
+                    float x2 = map(i, 0, rainfall.length - 1, border + (w * 0.5f), width - border - (w * 0.5f));
+                    float y2 = map(rainfall[i], 0, 120, height - border, border);
+                    line(x1, y1, x2, y2);
+                    fill(255);
+                    text(months[i], x1, height - border + 10);
+                }
             }
             case 2: {
                 // Pie chart
