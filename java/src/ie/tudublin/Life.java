@@ -127,16 +127,7 @@ public class Life extends PApplet {
             for (int col = 0 ; col < size ; col ++)
             {
                 float dice = random(0.0f, 1.0f);
-                /*
-                if (dice < 0.5)
-                {
-                    board[row][col] = true;
-                }
-                else
-                {
-                    board[row][col] = false;
-                }
-                */
+
                 board[row][col] = (dice < 0.5f) ? true : false;
             }
         }
@@ -169,7 +160,7 @@ public class Life extends PApplet {
     public void setup() {
         colorMode(RGB);
         randomize();
-        
+        frameRate(15);
         /*
         board[0][1] = true;
         board[1][2] = true;
@@ -186,7 +177,37 @@ public class Life extends PApplet {
     {
         // Put code here to apply the rules!!
 
-        
+            for(int i = 0; i < size; i++)
+            {
+                for(int j = 0; j < size; j++)
+                {
+                    int neighbours = countNeighbours(i, j);
+                    if(board[i][j])
+                    {
+                        if(neighbours == 2 || neighbours == 3)
+                            {
+                                next[i][j] = true;
+                            }
+                        else
+                            {
+                                next[i][j] = false;
+                            }
+                    }
+                    else
+                    {
+                        if(neighbours == 3)
+                            {
+                                next[i][j] = true;
+                            }
+                        else
+                            {
+                                next[i][j] = false;
+                            }
+                    }
+                }
+            }
+
+
         // Swap board and next
         boolean[][] temp = board;
         board = next;
