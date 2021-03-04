@@ -12,32 +12,37 @@ public class Gantt extends PApplet
 
     int startStage = -1;
     int endStage = -1;
-	    
+    private float leftBorder;
+    private float border;
+    
+
+
     void drawGrid()
     {
         float border = 0.1f * width;
         textAlign(CENTER, CENTER);
         //float drawable = width - (border * 2.0f);
         // /float gap = drawable / 10.0f;
-        for(int i = 0 ; i <=30 ; i ++)
+        for(int i = 1 ; i <=30 ; i ++)
         {
-            float x = map(i, 0, 30, border, width - border);
-            //float y = map(i, 0, 10, border, height - border);
-			
-            //float x = border + ((i + 5) * gap);
-            //float y = border + ((i + 5) * gap);
+            float x = map(i, 1, 30, border, width - border);
             stroke(0, 0, 255);
             line(x, border,x, height - border);
-            //line(border, y, width - border, y);
             fill(255);
             text(i, x, border / 2);
         }
 		for(int row = 0; row < stages.size(); row++)
 		{
-			Stage t = stages.get(row);
-			//float j = map(i, 0, 30, border, width - border);
-			float k = map(row, 0, 9, border, height - border);
+            Stage t = stages.get(row);
+			float k = map(row, 0, stages.size(), border + 50, height - border - 50);
+            fill(255);
 			text(t.getTask(), border / 2, k);
+            float x1 = map(t.getStart(), 1, 30, border, width-border);
+            float x2 = map(t.getEnd(), 1, 30, border, width-border);
+            int c = (int) map(row, 0, stages.size(), 0, 255);
+            noStroke();
+            fill(c, 255, 255);
+            rect(x1, k-20, x2 - x1, 40);
 			//break;
 		}
     }
@@ -65,7 +70,13 @@ public class Gantt extends PApplet
         }
     }
 
-	
+	public void displayTasks()
+    {
+        noStroke();
+        fill(random(40, 255), random(40, 255), random(40, 255));
+        for (int i = 0; i <= 30; i++)
+
+    }
 	// public void mousePressed()
 	// {
 	// 	println("Mouse pressed");	
@@ -89,7 +100,9 @@ public class Gantt extends PApplet
 	{
 		loadTasks();
         printTasks();
-		colorMode(RGB);
+		colorMode(HSB);
+        leftBorder = width * 0.2f;
+        // border = 100;
 	}
 	
 	public void draw()
