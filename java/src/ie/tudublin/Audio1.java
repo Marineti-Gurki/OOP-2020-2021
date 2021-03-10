@@ -28,7 +28,7 @@ public class Audio1 extends PApplet {
     public void setup() {
         minim = new Minim(this);
         ai = minim.getLineIn(Minim.MONO, width, 44100, 16);
-        ap = minim.loadFile("heroplanet.mp3", width);
+        ap = minim.loadFile("DoomsGate.mp3", width);
         //ab = ai.mix; // Connect the buffer to the mic
         ab = ap.mix; // Connect the buffer to the mp3 file
         colorMode(HSB);
@@ -44,11 +44,16 @@ public class Audio1 extends PApplet {
             if (ap.isPlaying()) {
                 ap.pause();
             } else {
-                ap.rewind();
+                //ap.rewind(); rewind disabled here because I didn't like it rewninding everytime I unpaused the track
                 ap.play();
             }
         }
-    }
+        //pressing enter rewinds the track
+        if (keyCode == ENTER)
+        {
+            ap.rewind();
+        }
+    } 
 
     float lerpedAverage = 0;
 
@@ -73,6 +78,13 @@ public class Audio1 extends PApplet {
             case 0:
             {
                 // Iterate over all the elements in the audio buffer
+                // See the difference lerping makes? It smooths out the jitteryness of average, so the visual looks smoother
+                // ellipse(width / 4, 100, average * 500, average * 500);
+                fill(255, 0, 50);
+                stroke(255, 0, 155);
+                ellipse(width / 2, height / 2, 170 + (lerpedAverage * 500), 170 + (lerpedAverage * 500));
+                fill(255, 0, 100);
+                ellipse(width / 2, height / 2, 40 + (lerpedAverage * 500), 40 + (lerpedAverage * 500));
                 for (int i = 0; i < ab.size(); i++) {
 
                     float c = map(i, 0, ab.size(), 0, 255);
@@ -82,23 +94,53 @@ public class Audio1 extends PApplet {
                     line(i, halfHeight - lerpedBuffer[i] * halfHeight * 4, halfHeight + lerpedBuffer[i] * halfHeight * 4, i);
                 }
 
-                // See the difference lerping makes? It smooths out the jitteryness of average, so the visual looks smoother
-                ellipse(width / 4, 100, average * 500, average * 500);
-                ellipse(width / 2, 100, 50 + (lerpedAverage * 500), 50 + (lerpedAverage * 500));
-        
                 // This is another example of how lerping works
-                ellipse(200, y, 30, 30);
-                ellipse(300, lerpedY, 30, 30);
-                y += random(-10, 10);
-                lerpedY = lerp(lerpedY, y, 0.1f);
+                // ellipse(200, y, 30, 30);
+                // ellipse(300, lerpedY, 30, 30);
+                // y += random(-10, 10);
+                // lerpedY = lerp(lerpedY, y, 0.1f);
                 break;
             }   
             case 1:
             {
+                // Iterate over all the elements in the audio buffer
+                for (int i = 0; i < ab.size(); i++) {
+
+                    float c = map(i, 0, ab.size(), 0, 255);
+                    stroke(c, 255, 255);
+                    lerpedBuffer[i] = lerp(lerpedBuffer[i], ab.get(i), 0.1f);
+        
+                    line(i, halfHeight - lerpedBuffer[i] * halfHeight * 4, i, halfHeight + lerpedBuffer[i] * halfHeight * 4);
+                }
                 break;
             }
             case 2:
             {
+                fill(255, 0, 50);
+                stroke(255, 0, 155);
+                ellipse(width / 2, height / 2, 130 + (lerpedAverage * 500), 130 + (lerpedAverage * 500));
+                fill(255, 0, 100);
+                ellipse(width / 2, height / 2, 40 + (lerpedAverage * 500), 40 + (lerpedAverage * 500));
+                for (int i = 0; i < ab.size(); i++) 
+                {
+                    float c = map(i, 0, ab.size(), 0, 255);
+                    stroke(c, 255, 255);
+                    lerpedBuffer[i] = lerp(lerpedBuffer[i], ab.get(i), 0.1f);
+    
+                    line(i, height, i, height + lerpedBuffer[i] * height * 4);
+
+                    line(i, lerpedBuffer[i] * height * 4, i, 0 - lerpedBuffer[i] * 0 * 4);
+
+
+                    //These 5 lines don't work, the first one works ALMOST but shows only dots instead of full waveform lines.
+                    line(height - lerpedBuffer[i] * height * 4, i, height - lerpedBuffer[i] * height * 4, i);
+                   
+                    // line(0, i, lerpedBuffer[i], i); 
+                    // line(width, y, width - lerpedBuffer[i], y); 
+                    // line(i, 0, i, lerpedBuffer[i]); 
+                    // line(i, height, i, height - lerpedBuffer[i]);
+                    
+                }
                 break;
             }
             case 3:
