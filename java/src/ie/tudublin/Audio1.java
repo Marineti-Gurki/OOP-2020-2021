@@ -16,8 +16,8 @@ public class Audio1 extends PApplet {
     float[] lerpedBuffer;
 
     public void settings() {
-        size(512, 512);
-        // fullScreen(P3D, SPAN); // Try this for full screen multiple monitor support :-) Be careful of exceptions!
+        size(512, 512, P3D);
+        //fullScreen(P3D); // Try this for full screen multiple monitor support :-) Be careful of exceptions!
     }
 
     float y = 200;
@@ -33,7 +33,6 @@ public class Audio1 extends PApplet {
         ab = ap.mix; // Connect the buffer to the mp3 file
         colorMode(HSB);
         lerpedBuffer = new float[width];
-
     }
 
     public void keyPressed() {
@@ -130,29 +129,50 @@ public class Audio1 extends PApplet {
                     line(i, height, i, height + lerpedBuffer[i] * height * 4);
 
                     line(i, lerpedBuffer[i] * height * 4, i, 0 - lerpedBuffer[i] * 0 * 4);
-
-
-                    //These 5 lines don't work, the first one works ALMOST but shows only dots instead of full waveform lines.
-                    line(height - lerpedBuffer[i] * height * 4, i, height - lerpedBuffer[i] * height * 4, i);
                    
-                    // line(0, i, lerpedBuffer[i], i); 
-                    // line(width, y, width - lerpedBuffer[i], y); 
-                    // line(i, 0, i, lerpedBuffer[i]); 
-                    // line(i, height, i, height - lerpedBuffer[i]);
-                    
+                    line(0, i, lerpedBuffer[i] * height * 4, i); 
+
+                    line(width, i, width - lerpedBuffer[i] * halfHeight * 4, i); 
                 }
                 break;
             }
             case 3:
             {
+                fill(255, 0, 50);
+                stroke(255, 0, 155);
+                ellipse(width / 2, height / 2, 130 + (lerpedAverage * 500), 130 + (lerpedAverage * 500));
                 break;
             }
             case 4:
             {
+                fill(255, 0, 50);
+                stroke(255, 0, 155);
+                rectMode(CENTER);
+                rect(width / 2, height / 2, 130 + (lerpedAverage * 500), 130 + (lerpedAverage * 500));
                 break;
             }
             case 5:
             {
+                float r = 0.1f;
+                int numPoints = 10;
+                float thetaInc = TWO_PI / (float) numPoints;
+                float lastX = width / 2, lastY = height / 2;
+                strokeWeight(3);
+                stroke(255, 255, 255);
+                for (int i = 0; i < 1000; i++)
+                {
+                    float c = map(i, 0, ab.size(), 0, 255);
+                    float theta = i * thetaInc * lerpedAverage * 7.5f;
+                    float x = width / 2 + sin(theta) * r;
+                    float y = height / 2 + cos(theta) * r;
+                    r += 0.1f;
+                    // I love this one, it's got a fantastic color scheme
+                    stroke(c, 255, r++);
+                    r++;
+                    line(lastX, lastY, x, y);
+                    lastX = x;
+                    lastY = y;
+                }
                 // ??
                 break;
             }
