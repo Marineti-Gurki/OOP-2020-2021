@@ -5,7 +5,7 @@ import processing.core.PApplet;
 public class YASC extends PApplet {
     boolean[] keys = new boolean[1024];
 
-    Player p;
+    Player p, p2;
 
     public void settings() {
         size(500, 500);
@@ -13,7 +13,7 @@ public class YASC extends PApplet {
 
     public void setup() {
         p = new Player(this, width / 2, height / 2);
-
+        p2 = new Player(this, 100, 100);
     }
 
     public void draw() {
@@ -21,6 +21,9 @@ public class YASC extends PApplet {
         stroke(255);
         p.update();
         p.render();
+
+        p2.update();
+        p2.render();
     }
 
     boolean checkKey(int k) {

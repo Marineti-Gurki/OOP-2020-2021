@@ -8,27 +8,40 @@ public class Player {
     float halfW = w / 2;
     float rotation;
     YASC yasc;
+    float dx;
+    float dy;
 
     
 
     void render()
     {
+        yasc.pushMatrix();
+
+        yasc.translate(x, y);
         yasc.rotate(rotation);
+
         yasc.line(- halfW, halfW, 0, - halfW);
         yasc.line(0, - halfW, halfW, halfW);
         yasc.line(halfW, halfW, 0, 0);
         yasc.line(0, 0, - halfW, halfW);
+        
+        yasc.popMatrix();
+
     }
 
     void update()
     {
+        dx = PApplet.sin(rotation);
+        dy = - PApplet.cos(rotation);
         if (yasc.checkKey(PApplet.UP))
         {
-            y -= 1;
+            y += dy;
+            x += dx;
         }
         if (yasc.checkKey(PApplet.DOWN))
         {
-            y += 1;
+            y -= dy;
+            x -= dx;
         }
         if (yasc.checkKey(PApplet.LEFT))
         {
