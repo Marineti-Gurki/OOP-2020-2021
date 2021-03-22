@@ -85,6 +85,7 @@ public class Audio2 extends PApplet {
         smoothedBands = new float[bands.length];
 
     }
+    
 
     public void keyPressed() {
         if (keyCode >= '0' && keyCode <= '5') {
