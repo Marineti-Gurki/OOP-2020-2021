@@ -20,10 +20,12 @@ public class Health {
     }
     void render()
     {
-        //yasc.pushMatrix();
+        yasc.pushMatrix();
+        //yasc.translate(x, y);
+        yasc.rotate(rotation);
         yasc.rectMode(PApplet.CENTER);
         yasc.rect(x, y, 50, 50);
-        //yasc.popMatrix();
+        yasc.popMatrix();
     }
 
     void update()
@@ -31,8 +33,6 @@ public class Health {
         //dx = PApplet.sin(rotation);
         //dy =  - PApplet.cos(rotation);
         
-        //x+=dx;
-        //x+=dy;
         x = x + speedx;
         y = y + speedy;
 
@@ -40,7 +40,7 @@ public class Health {
         {
             x = yasc.width;
             speedx *= -1;
-            rotation -= 0.1f;
+            rotation += 0.1f;
         }
         if (x < 0)
         {
@@ -58,7 +58,7 @@ public class Health {
         {
             y = yasc.height;
             speedy *= -1;
-            rotation -= 0.1f;
+            rotation += 0.1f;
         }
         // if (x < yasc.height || x < yasc.width)
         // {
