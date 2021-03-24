@@ -9,22 +9,27 @@ public class Health {
     YASC yasc;
     float speedx;
     float speedy;
+    int healthctr;
 
     public Health(YASC yasc, float x, float y) {
         this.yasc = yasc;
         this.x = x;
         this.y = y;
         rotation = 0;
-        speedx = yasc.random(2, 8);
-        speedy = yasc.random(2, 8);
+        speedx = yasc.random(1, 2);
+        speedy = yasc.random(1, 2);
+        healthctr = 100;
     }
     void render()
     {
+        
         yasc.pushMatrix();
         //yasc.translate(x, y);
         yasc.rotate(rotation);
         yasc.rectMode(PApplet.CENTER);
         yasc.rect(x, y, 50, 50);
+        yasc.color(255);
+        yasc.text(healthctr, 20, 20);
         yasc.popMatrix();
     }
 
@@ -35,50 +40,40 @@ public class Health {
         
         x = x + speedx;
         y = y + speedy;
-
+        //rotation += 0.01f;
         if (x > yasc.width)
         {
             x = yasc.width;
-            speedx *= -1;
-            rotation += 0.1f;
+            respawn();
+            //speedx *= -1;
+            //rotation += 0.1f;
         }
         if (x < 0)
         {
             x = 0;
-            speedx *= -1;
-            rotation -= 0.1f;
+            respawn();
+            //speedx *= -1;
+            //rotation -= 0.1f;
         }
         if (y < 0)
         {
             y = 0;
-            speedy *= -1;
-            rotation -= 0.1f;
+            respawn();
+            //speedy *= -1;
+            //rotation -= 0.1f;
         }
         if (y > yasc.height)
         {
             y = yasc.height;
-            speedy *= -1;
-            rotation += 0.1f;
+            respawn();
+            //speedy *= -1;
+            //rotation += 0.1f;
         }
-        // if (x < yasc.height || x < yasc.width)
-        // {
-        //     x = dx * - 1;
-        //     x = dy * - 1;
-        //     rotation -= 0.1f;
-        // }
-        // if (yasc.checkKey(PApplet.DOWN))
-        // {
-        //     x -= dx;
-        //     x -= dy;
-        // }
-        // if (yasc.checkKey(PApplet.LEFT))
-        // {
-        //     rotation -= 0.1f;
-        // }
-        // if (yasc.checkKey(PApplet.RIGHT))
-        // {
-        //     rotation += 0.1f;
-        // }        
+    }
+    void respawn()
+    {
+        x = 50;
+        y = 50;
     }
 
 

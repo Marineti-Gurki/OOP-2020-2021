@@ -30,13 +30,23 @@ public class YASC extends PApplet {
         p.render();
         h.update();
         h.render();
-        
         // Check collisions        
         checkCollisions();
     }
 
     void checkCollisions() 
     {
+        if(dist(h.x, h.y, p.x, p.y) <= 20)
+        {
+            if(h.healthctr < 100)
+            {
+                h.healthctr+=10;
+                h.respawn();
+            }
+            else{
+                h.respawn();
+            }
+        }
     }
 
     boolean checkKey(int k) {
