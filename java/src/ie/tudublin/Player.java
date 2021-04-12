@@ -2,27 +2,16 @@ package ie.tudublin;
 
 import processing.core.PApplet;
 
-public class Player {
-
-    float x, y;
-    float dx, dy;
-    float w = 50;
-    float halfW = w / 2;
-    YASC yasc;
-    float rotation;
-
+public class Player extends GameObject{
     int health = 10;
     int ammo = 10;
 
     public Player(YASC yasc, float x, float y)
     {
-        this.yasc = yasc;
-        this.x = x;
-        this.y = y;
-        rotation = 0;
+        super(yasc, x, y, 0);
     }
 
-    void render()
+    public void render()
     {
         yasc.pushMatrix();
         yasc.translate(x, y);
@@ -47,10 +36,11 @@ public class Player {
             Bullet b = new Bullet(yasc, x + (dx * dist), y + (dy * dist), rotation);
             
             yasc.bullets.add(b);
+
         }
     }
 
-    void update()
+    public void update()
     {
         dx = PApplet.sin(rotation);
         dy =  - PApplet.cos(rotation);

@@ -26,6 +26,8 @@ public class YASC extends PApplet {
         p = new Player(this, width / 2, height / 2);
         h = new Health(this);
         a = new Ammo(this);
+        h.respawn();
+        a.respawn();
     }
 
     public void draw() {
@@ -44,8 +46,9 @@ public class YASC extends PApplet {
         a.update();
         a.render();
 
-        for(Bullet b:bullets)
+        for(int i = bullets.size() - 1; i >= 0 ; i--)
         {
+            Bullet b = bullets.get(i);
             b.update();
             b.render();
         }

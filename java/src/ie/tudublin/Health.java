@@ -1,21 +1,10 @@
 package ie.tudublin;
 
-import processing.core.PApplet;
-
-public class Health {
-
-    private float x, y;
-    float dx, dy;
-    float w = 50;
-    float halfW = w / 2;
-    YASC yasc;
-    float rotation;
+public class Health extends GameObject{
 
     public Health(YASC yasc)
     {
-        this.yasc = yasc;
-        rotation = 0;
-        respawn();            
+        super(yasc, 0, 0, 0);     
     }
 
     void respawn()
@@ -55,7 +44,7 @@ public class Health {
         }
     }
 
-    void render()
+    public void render()
     {
         yasc.pushMatrix();
         yasc.translate(x, y);
@@ -73,7 +62,7 @@ public class Health {
         yasc.popMatrix();
     }
 
-    void update()
+    public void update()
     {        
         x += dx;
         y += dy;
