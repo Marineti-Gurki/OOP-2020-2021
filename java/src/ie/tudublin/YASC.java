@@ -1,5 +1,7 @@
 package ie.tudublin;
 
+import java.util.ArrayList;
+
 import processing.core.PApplet;
 
 public class YASC extends PApplet {
@@ -13,39 +15,57 @@ public class YASC extends PApplet {
 
     Player p;
     Health h;
+    Ammo a;
+    ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 
     public void settings() {
         size(500, 500);
     }
 
     public void setup() {
-        h = new Health(this, width / 2, height / 2);
         p = new Player(this, width / 2, height / 2);
+        h = new Health(this);
+        a = new Ammo(this);
     }
 
     public void draw() {
+
+        fill(255);
         background(0);
+        text("Bullets: " + bullets.size(), 50, 50);
+        text("FPS: " + frameRate, 50, 100);
+        
         stroke(255);
         p.update();
         p.render();
         h.update();
         h.render();
+
+        a.update();
+        a.render();
+
+        for(Bullet b:bullets)
+        {
+            b.update();
+            b.render();
+        }
+        
         // Check collisions        
         checkCollisions();
     }
 
     void checkCollisions() 
     {
-        if(dist(h.x, h.y, p.x, p.y) <= 20)
+        if (dist(p.x, p.y, h.getX(), h.getY()) < p.halfW + h.halfW)
         {
-            if(h.healthctr < 100)
-            {
-                h.healthctr+=10;
-                h.respawn();
-            }
-            else{
-                h.respawn();
-            }
+            p.health += 10;
+            h.respawn();    
+        }
+
+        if (dist(p.x, p.y, a.x, a.y) < p.halfW + a.halfW)
+        {
+            p.ammo += 10;
+            a.respawn();    
         }
     }
 

@@ -1,106 +1,124 @@
 package ie.tudublin;
+
 import processing.core.PApplet;
 
 public class Health {
-    float x;
-    float y;
-    float halfW = y / 2;
-    float rotation;
-    YASC yasc;
-    float speedx;
-    float speedy;
-    int healthctr;
 
-    public Health(YASC yasc, float x, float y) {
+    private float x, y;
+    float dx, dy;
+    float w = 50;
+    float halfW = w / 2;
+    YASC yasc;
+    float rotation;
+
+    public Health(YASC yasc)
+    {
         this.yasc = yasc;
-        this.x = x;
-        this.y = y;
         rotation = 0;
-        speedx = yasc.random(1, 2);
-        speedy = yasc.random(1, 2);
-        healthctr = 100;
+        respawn();            
     }
+
+    void respawn()
+    {
+        // Roll a dice
+        int dice = (int) yasc.random(5);
+        switch (dice)
+        {
+            case 0:
+                // left
+                x = -w;
+                y = yasc.random(0, yasc.height);
+                dx = yasc.random(1, 4);
+                dy = yasc.random(-1, 1);
+                break;
+            case 1:
+                // top 
+                x = yasc.random(0, yasc.width);
+                y = -w;
+                dx = yasc.random(-1, 1);
+                dy = yasc.random(1, 4);
+                break;
+            case 2:
+                // right
+                x = yasc.width + w;
+                y = yasc.random(0, yasc.height);
+                dx = yasc.random(-1, -4);
+                dy = yasc.random(-1, 1);
+                break;
+            case 3:
+                // bottom
+                x = yasc.random(0, yasc.width);
+                y = yasc.height + w;
+                dx = yasc.random(-1, 1);
+                dy = yasc.random(-1, -4);
+                break;
+        }
+    }
+
     void render()
     {
-        
         yasc.pushMatrix();
-        //yasc.translate(x, y);
+        yasc.translate(x, y);
         yasc.rotate(rotation);
-        yasc.rectMode(PApplet.CENTER);
-        yasc.rect(x, y, 50, 50);
-        yasc.color(255);
-        yasc.text(healthctr, 20, 20);
+        // Write this!!
+        yasc.stroke(255);
+        yasc.line(-halfW, halfW, -halfW, -halfW);
+        yasc.line(-halfW, -halfW, halfW, -halfW);
+        yasc.line(halfW, -halfW, halfW, halfW);        
+        yasc.line(halfW, halfW, -halfW, halfW);
+
+        yasc.line(0, -halfW, 0, halfW);
+        yasc.line(-halfW, 0, halfW, 0);
+
         yasc.popMatrix();
     }
 
     void update()
-    {
-        //dx = PApplet.sin(rotation);
-        //dy =  - PApplet.cos(rotation);
-        
-        x = x + speedx;
-        y = y + speedy;
-        //rotation += 0.01f;
-        if (x > yasc.width)
-        {
-            x = yasc.width;
-            respawn();
-            //speedx *= -1;
-            //rotation += 0.1f;
-        }
-        if (x < 0)
-        {
-            x = 0;
-            respawn();
-            //speedx *= -1;
-            //rotation -= 0.1f;
-        }
-        if (y < 0)
-        {
-            y = 0;
-            respawn();
-            //speedy *= -1;
-            //rotation -= 0.1f;
-        }
-        if (y > yasc.height)
-        {
-            y = yasc.height;
-            respawn();
-            //speedy *= -1;
-            //rotation += 0.1f;
-        }
-    }
-    void respawn()
-    {
-        x = 50;
-        y = 50;
-    }
+    {        
+        x += dx;
+        y += dy;
+        rotation += 0.01f;
 
+        if (x < - w)
+        {
+            respawn();
+        }
+        if (x > yasc.width + w)
+        {
+            respawn();
+        }
+
+        if (y < - w)
+        {
+            respawn();
+        }
+        if (y > yasc.height + w)
+        {
+            respawn();
+        }
+    }
 
     public float getX() {
         return x;
     }
+
     public void setX(float x) {
         this.x = x;
     }
+
     public float getY() {
-        return x;
-    }
-    public void setY(float x) {
-        this.x = x;
-    }
-    public float getW() {
         return y;
     }
-    public void setW(float y) {
+
+    public void setY(float y) {
         this.y = y;
     }
-    public float getHalfW() {
-        return halfW;
-    }
-    public void setHalfW(float halfW) {
-        this.halfW = halfW;
+
+    public float getW() {
+        return w;
     }
 
-    
+    public void setW(float w) {
+        this.w = w;
+    }
 }
